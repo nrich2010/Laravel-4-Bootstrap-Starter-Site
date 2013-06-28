@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'name' => 'Nick Rich - NR Web Development',
+	'name' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -26,6 +26,6 @@ return array(
 	|
 	*/
 
-	'email' => 'nick@nrwebdev.com',
+	'email' => '',
 
 );
