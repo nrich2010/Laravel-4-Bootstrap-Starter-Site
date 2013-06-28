@@ -14,7 +14,7 @@ return array(
     | A default "application" collection is ready for immediate use. It makes
     | a couple of assumptions about your directory structure.
     |
-    | /public
+    | /app
     |    /assets
     |        /stylesheets
     |            /less
@@ -28,74 +28,75 @@ return array(
 
     'collections' => array(
 
-        'public' => function($collection)
+        'public-css' => function($collection)
         {
             $collection->directory('assets/css', function($collection)
             {
-                $collection->add('less/master.less')->apply('Less');
-            })->apply('UriRewriteFilter')->apply('CssMin');
-
+                $collection->add('bootstrap.min.css');
+                $collection->add('bootstrap-responsive.min.css');
+                $collection->add('style.css');
+            })->apply('UriRewriteFilter')->setArguments(public_path());
+        },
+        'public-js' => function($collection)
+        {
             $collection->directory('assets/js', function($collection)
             {
-                $collection->javascript('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js');
-                //$collection->add('bootstrap/bootstrap.js');
-                $collection->requireDirectory('../../../vendor/twitter/bootstrap/js');
-            })->apply('JsMin');
+                $collection->add('jquery.v1.8.3.min.js');
+                $collection->add('bootstrap/bootstrap.min.js');
+            })->apply('UriRewriteFilter')->setArguments(public_path());
+        },
+        'admin-css' => function($collection)
+        {
+            $collection->directory('assets/css', function($collection)
+            {
+                $collection->add('bootstrap.min.css');
+                $collection->add('wysihtml5/prettify.css');
+                $collection->add('bootstrap-responsive.css');
+                $collection->add('wysihtml5/bootstrap-wysihtml5-0.0.2.css');
+                $collection->add('style.css');
+            })->apply('UriRewriteFilter')->setArguments(public_path());
+        },
+        'admin-js' => function($collection)
+        {
+            $collection->directory('assets/js', function($collection)
+            {
+                $collection->add('wysihtml5/wysihtml5-0.3.0.js');
+                $collection->add('jquery-1.9.1.min.js');
+                $collection->add('prettify.js');
+                $collection->add('bootstrap/bootstrap.min.js');
+                $collection->add('wysihtml5/bootstrap-wysihtml5.js');
+            })->apply('UriRewriteFilter')->setArguments(public_path());
         },
 
-        'admin' => function($collection)
+        /*
+         // Basset default config
+        'application' => function($collection)
         {
-            $collection->directory('assets/css', function($collection)
+            // Switch to the stylesheets directory and require the "less" and "sass" directories.
+            // These directories both have a filter applied to them so that the built
+            // collection will contain valid CSS.
+            $directory = $collection->directory('../app/assets/stylesheets', function($collection)
             {
-                $collection->add('less/master.less')->apply('Less');
-                $collection->add('wysihtml5/prettify.css');
-                $collection->add('wysihtml5/bootstrap-wysihtml5.css');
-                $collection->add('datatables-bootstrap.css');
-                $collection->add('colorbox.css');
-            })->apply('UriRewriteFilter')->apply('CssMin');
+                $collection->requireDirectory('less')->apply('Less');
+                $collection->requireDirectory('sass')->apply('Sass');
+                $collection->requireDirectory();
+            });
 
-            $collection->directory('assets/js', function($collection)
+            $directory->apply('CssMin');
+            $directory->apply('UriRewriteFilter');
+
+            // Switch to the javascripts directory and require the "coffeescript" directory. As
+            // with the above directories we'll apply the CoffeeScript filter to the directory
+            // so the built collection contains valid JS.
+            $directory = $collection->directory('../app/assets/javascripts', function($collection)
             {
-                $collection->javascript('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js');
-                //$collection->add('bootstrap/bootstrap.js');
-                $collection->requireDirectory('../../../vendor/twitter/bootstrap/js');
-                $collection->add('wysihtml5/wysihtml5-0.3.0.js');
-                $collection->add('wysihtml5/bootstrap-wysihtml5.js');
-                $collection->javascript('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js');
-                $collection->add('datatables-bootstrap.js');
-                $collection->add('datatables.fnReloadAjax.js');
-                $collection->add('jquery.colorbox.js');
-                $collection->add('prettify.js');
-            })->apply('JsMin');
+                $collection->requireDirectory('coffeescripts')->apply('CoffeeScript');
+                $collection->requireDirectory();
+            });
+
+            $directory->apply('JsMin');
         }
-
-        // Basset default config
-        // 'application' => function($collection)
-        // {
-        //     // Switch to the stylesheets directory and require the "less" and "sass" directories.
-        //     // These directories both have a filter applied to them so that the built
-        //     // collection will contain valid CSS.
-        //     $directory = $collection->directory('assets/stylesheets', function($collection)
-        //     {
-        //         $collection->requireDirectory('less')->apply('Less');
-        //         $collection->requireDirectory('sass')->apply('Sass');
-        //         $collection->requireDirectory();
-        //     });
-
-        //     $directory->apply('CssMin');
-        //     $directory->apply('UriRewriteFilter');
-
-        //     // Switch to the javascripts directory and require the "coffeescript" directory. As
-        //     // with the above directories we'll apply the CoffeeScript filter to the directory
-        //     // so the built collection contains valid JS.
-        //     $directory = $collection->directory('assets/javascripts', function($collection)
-        //     {
-        //         $collection->requireDirectory('coffeescripts')->apply('CoffeeScript');
-        //         $collection->requireDirectory();
-        //     });
-
-        //     $directory->apply('JsMin');
-        // }
+        */
 
     ),
 
@@ -129,6 +130,8 @@ return array(
     |
     | If the directory does not exist Basset will attempt to create it.
     |
+    | Default: assets
+    |
     */
 
     'build_path' => 'assets/compiled',
@@ -144,7 +147,6 @@ return array(
     */
 
     'debug' => false,
-
     /*
     |--------------------------------------------------------------------------
     | Node Paths
@@ -221,9 +223,9 @@ return array(
             |
             */
 
-            'Less' => array('LessphpFilter', function($filter)
+            'Less' => array('LessFilter', function($filter)
             {
-                $filter->whenAssetIs('.*\.less')->findMissingConstructorArgs();
+                $filter->whenAssetIs('*.less')->findMissingConstructorArgs();
             }),
 
             /*
@@ -238,7 +240,7 @@ return array(
 
             'Sass' => array('Sass\ScssFilter', function($filter)
             {
-                $filter->whenAssetIs('.*\.(sass|scss)')->findMissingConstructorArgs();
+                $filter->whenAssetIs('*.(sass|scss)')->findMissingConstructorArgs();
             }),
 
             /*
@@ -253,7 +255,7 @@ return array(
 
             'CoffeeScript' => array('CoffeeScriptFilter', function($filter)
             {
-                $filter->whenAssetIs('.*\.coffee')->findMissingConstructorArgs();
+                $filter->whenAssetIs('*.coffee')->findMissingConstructorArgs();
             }),
 
             /*
@@ -268,7 +270,7 @@ return array(
 
             'CssMin' => array('CssMinFilter', function($filter)
             {
-                $filter->whenAssetIsStylesheet()->whenProductionBuild()->whenClassExists('CssMin');
+                $filter->whenEnvironmentIs('production', 'prod')->whenClassExists('CssMin');
             }),
 
             /*
@@ -281,23 +283,9 @@ return array(
             |
             */
 
-            'JsMin' => array('JSMinFilter', function($filter)
+            'JsMin' => array('JsMinFilter', function($filter)
             {
-                $filter->whenAssetIsJavascript()->whenProductionBuild()->whenClassExists('JSMin');
-            }),
-
-            /*
-            |--------------------------------------------------------------------------
-            | UriRewrite Filter Alias
-            |--------------------------------------------------------------------------
-            |
-            | Filter gets a default argument of the path to the public directory.
-            |
-            */
-
-            'UriRewriteFilter' => array('UriRewriteFilter', function($filter)
-            {
-                $filter->setArguments(public_path())->whenAssetIsStylesheet();
+                $filter->whenEnvironmentIs('production', 'prod')->whenClassExists('JsMin');
             })
 
         )

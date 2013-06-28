@@ -26,14 +26,11 @@ class AdminBlogsController extends AdminController {
      */
     public function getIndex()
     {
-        // Title
-        $title = Lang::get('admin/blogs/title.blog_management');
-
         // Grab all the blog posts
-        $posts = $this->post;
+        $posts = $this->post->orderBy('created_at', 'DESC')->paginate(10);
 
         // Show the page
-        return View::make('admin/blogs/index', compact('posts', 'title'));
+        return View::make('admin/blogs/index', compact('posts'));
     }
 
 	/**
@@ -43,11 +40,8 @@ class AdminBlogsController extends AdminController {
 	 */
 	public function getCreate()
 	{
-        // Title
-        $title = Lang::get('admin/blogs/title.create_a_new_blog');
-
         // Show the page
-        return View::make('admin/blogs/create_edit', compact('title'));
+        return View::make('admin/blogs/create');
 	}
 
 	/**
@@ -115,11 +109,8 @@ class AdminBlogsController extends AdminController {
      */
 	public function getEdit($post)
 	{
-        // Title
-        $title = Lang::get('admin/blogs/title.blog_update');
-
         // Show the page
-        return View::make('admin/blogs/create_edit', compact('post', 'title'));
+        return View::make('admin/blogs/edit', compact('post'));
 	}
 
     /**
@@ -175,11 +166,8 @@ class AdminBlogsController extends AdminController {
      */
     public function getDelete($post)
     {
-        // Title
-        $title = Lang::get('admin/blogs/title.blog_delete');
-
         // Show the page
-        return View::make('admin/blogs/delete', compact('post', 'title'));
+        return View::make('admin/blogs/delete', compact('post'));
     }
 
     /**
@@ -211,31 +199,11 @@ class AdminBlogsController extends AdminController {
                 // Redirect to the blog posts management page
                 return Redirect::to('admin/blogs')->with('success', Lang::get('admin/blogs/messages.delete.success'));
             }
+
+
         }
         // There was a problem deleting the blog post
         return Redirect::to('admin/blogs')->with('error', Lang::get('admin/blogs/messages.delete.error'));
-    }
-
-    /**
-     * Show a list of all the blog posts formatted for Datatables.
-     *
-     * @return Datatables JSON
-     */
-    public function getData()
-    {
-        $posts = Post::select(array('posts.id', 'posts.title', 'posts.id as comments', 'posts.created_at'));
-
-        return Datatables::of($posts)
-
-        ->edit_column('comments', '{{ DB::table(\'comments\')->where(\'post_id\', \'=\', $id)->count() }}')
-
-        ->add_column('actions', '<a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/edit\' ) }}}" class="btn btn-mini iframe" >{{{ Lang::get(\'button.edit\') }}}</a>
-                <a href="{{{ URL::to(\'admin/blogs/\' . $id . \'/delete\' ) }}}" class="btn btn-mini btn-danger iframe">{{{ Lang::get(\'button.delete\') }}}</a>
-            ')
-
-        ->remove_column('id')
-
-        ->make();
     }
 
 }

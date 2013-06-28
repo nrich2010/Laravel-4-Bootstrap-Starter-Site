@@ -105,9 +105,6 @@ Route::controller('user', 'UserController');
 
 //:: Application Routes ::
 
-# Filter for detect language
-Route::when('contact-us','detectLang');
-
 # Contact Us Static Page
 Route::get('contact-us', function()
 {
@@ -120,4 +117,4 @@ Route::get('{postSlug}', 'BlogController@getView');
 Route::post('{postSlug}', 'BlogController@postView');
 
 # Index Page - Last route, no matches
-Route::get('/', array('before' => 'detectLang','uses' => 'BlogController@getIndex'));
+Route::get('/', 'BlogController@getIndex');

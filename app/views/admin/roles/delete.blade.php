@@ -1,28 +1,41 @@
-@extends('admin.layouts.modal')
+@extends('admin/layouts/default')
+
+{{-- Web site Title --}}
+@section('title')
+Role Delete ::
+@parent
+@stop
 
 {{-- Content --}}
 @section('content')
-    <!-- Tabs -->
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
-            <li><a href="#tab-permissions" data-toggle="tab">Permissions</a></li>
-        </ul>
-    <!-- ./ tabs -->
+<div class="page-header">
+	<h3>
+		Role Delete
 
-    {{-- Delete Role Form --}}
-    <form class="form-horizontal" method="post" action="" autocomplete="off">
-        <!-- CSRF Token -->
-        <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
-        <input type="hidden" name="id" value="{{ $role->id }}" />
-        <!-- ./ csrf token -->
+		<div class="pull-right">
+			<a href="{{{ URL::to('admin/roles') }}}" class="btn btn-small btn-inverse"><i class="icon-circle-arrow-left icon-white"></i> Back</a>
+		</div>
+	</h3>
+</div>
 
-        <!-- Form Actions -->
-        <div class="control-group">
-            <div class="controls">
-                <element class="btn-cancel close_popup">Cancel</element>
-                <button type="submit" class="btn btn-danger close_popup">Delete</button>
-            </div>
+<!-- Tabs -->
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#tab-general" data-toggle="tab">Delete</a></li>
+</ul>
+<!-- ./ tabs -->
+<form class="form-horizontal" method="post" action="" autocomplete="off">
+    <!-- CSRF Token -->
+    <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
+    <input type="hidden" name="id" value="{{ $role->id }}" />
+    <!-- ./ csrf token -->
+
+    <!-- Form Actions -->
+    <div class="control-group">
+        <div class="controls">
+            <a class="btn btn-link" href="{{{ URL::to('admin/roles') }}}">Cancel</a>
+            <button type="submit" class="btn btn-danger">delete</button>
         </div>
-        <!-- ./ form actions -->
-    </form>
+    </div>
+    <!-- ./ form actions -->
+</form>
 @stop

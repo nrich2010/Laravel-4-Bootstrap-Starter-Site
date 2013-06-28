@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://busapp.local',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'UTC',
+	'timezone' => 'America/Chicago',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'xGyKx7odt5VzG4dif6B9z8I3NVJon6Nb',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -119,11 +119,13 @@ return array(
         'Zizaco\Entrust\EntrustServiceProvider', // Entrust Provider for roles
         'Basset\BassetServiceProvider', // Better Asset Management
         'Robbo\Presenter\PresenterServiceProvider', // Presenter
-        'Bllim\Datatables\DatatablesServiceProvider', // Datatables
 
         /* Uncomment for use in development */
-//        'Way\Generators\GeneratorsServiceProvider', // Generators
-//        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+        'Way\Generators\GeneratorsServiceProvider', // Generators
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+        
+        /* New ones */
+        'Nrwebdev\BusApp\BusAppServiceProvider'
 
     ),
 
@@ -198,10 +200,7 @@ return array(
         'Basset'          => 'Basset\Facade', // Better Asset Management
         'String'          => 'Andrew13\Helpers\String', // String
         'Carbon'          => 'Carbon\Carbon', // Carbon
-        'Datatables'      => 'Bllim\Datatables\Datatables', // DataTables
 
     ),
-
-    'available_language' => array('en', 'pt', 'es'),
 
 );

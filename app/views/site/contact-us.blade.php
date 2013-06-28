@@ -8,6 +8,6 @@
 {{-- Content --}}
 @section('content')
 
-{{{ Lang::get('site.contact_us') }}}
+Contact us page.
 
 @stop
