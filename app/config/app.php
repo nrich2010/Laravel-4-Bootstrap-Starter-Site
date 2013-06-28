@@ -121,8 +121,11 @@ return array(
         'Robbo\Presenter\PresenterServiceProvider', // Presenter
 
         /* Uncomment for use in development */
-//        'Way\Generators\GeneratorsServiceProvider', // Generators
-//        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+        'Way\Generators\GeneratorsServiceProvider', // Generators
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
+        
+        /* New ones */
+        'Nrwebdev\BusApp\BusAppServiceProvider'
 
     ),
 
