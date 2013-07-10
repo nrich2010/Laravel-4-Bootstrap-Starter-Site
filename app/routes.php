@@ -113,8 +113,22 @@ Route::get('contact-us', function()
 });
 
 # Posts - Second to last set, match slug
-Route::get('{postSlug}', 'BlogController@getView');
-Route::post('{postSlug}', 'BlogController@postView');
+#Route::get('{postSlug}', 'BlogController@getView');
+#Route::post('{postSlug}', 'BlogController@postView');
+
 
 # Index Page - Last route, no matches
-Route::get('/', 'BlogController@getIndex');
+#Route::get('/', 'RidersController@getIndex');
+
+
+Route::resource('riders', 'RidersController');
+
+Route::resource('drivers', 'DriversController');
+
+Route::resource('schools', 'SchoolsController');
+
+Route::resource('teachers', 'TeachersController');
+
+Route::resource('addresses', 'AddressesController');
+
+Route::resource('buses', 'BusesController');

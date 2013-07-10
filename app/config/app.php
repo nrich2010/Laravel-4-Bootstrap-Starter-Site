@@ -125,7 +125,7 @@ return array(
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // IDE Helpers
         
         /* New ones */
-        'Nrwebdev\BusApp\BusAppServiceProvider'
+        //'Nrwebdev\BusApp\BusAppServiceProvider'
 
     ),
 
